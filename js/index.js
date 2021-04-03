@@ -2002,29 +2002,27 @@ let inputRule =
 8-11 h
 5-6 d`
 
-function firstCondition() {
-    //Splits the given inputs by line
-    let inputSplit = input.split("\n");
-    let inputRuleSplit = inputRule.split("\n");
+//Splits the given inputs by line
+let inputSplit = input.split("\n");
+let inputRuleSplit = inputRule.split("\n");
 
-    //Declaring all variables that will be called later
-    let letterCount = 0;
-    let password = "";
-    let possiblePasswordCount = 0;
+//Declaring all variables that will be called later
+let letterCount = 0;
+let possiblePasswordCount = 0;
 
-    //A for loop to split the array into smaller arrays
-    for (i = 0; i < inputRuleSplit.length; i++) {
-        inputRuleSplit[i] = inputRuleSplit[i].split(" ");
-        inputRuleSplit[i][0] = inputRuleSplit[i][0].split("-");
-    }
+//This splits the array into smaller arrays
+for (i = 0; i < inputRuleSplit.length; i++) {
+    inputRuleSplit[i] = inputRuleSplit[i].split(" ");
+    inputRuleSplit[i][0] = inputRuleSplit[i][0].split("-");
+}
 
-    //This for loop executes as many times as there are password inputs
+//The answer to Question 1 is 424
+function firstQuestion() {
     for (i = 0; i < inputSplit.length; i++) {
         letterCount = 0;
 
-        //A for loop that executes as many times as there are letter in the password input
+        //Checks all characters to see if they are equal to the given letter; if it is, then it adds one to the letterCount
         for (j = 0; j < inputSplit[i].split('').length; j++) {
-            //Checks to see if the character at position j is equal to the letter that there needs to a certain amount of
             if (inputSplit[i].charAt(j) == inputRuleSplit[i][1]) {
                 letterCount++;
             }
@@ -2036,6 +2034,49 @@ function firstCondition() {
         possiblePassword = inputSplit[i];
     }
     console.log(possiblePasswordCount);
+    possiblePasswordCount = 0;
 }
 
-firstCondition();
+//The answer to Question 2 is 747
+function secondQuestion() {
+    //Checks the character at the 2 given positions, and if only one position matches the given letter, then it counts up, otherwise is does nothing
+    for (i = 0; i < inputSplit.length; i++) {
+        letterCount = 0;
+
+        let positionOne = inputRuleSplit[i][0][0] - 1;
+        let positionTwo = inputRuleSplit[i][0][1] - 1;
+        let letter = inputRuleSplit[i][1];
+
+        if (((inputSplit[i].charAt(positionOne) == letter) && !(inputSplit[i].charAt(positionTwo) == letter)) || (!(inputSplit[i].charAt(positionOne) == letter) && (inputSplit[i].charAt(positionTwo) == letter))) {
+            possiblePasswordCount++;
+        }
+    }
+    console.log(possiblePasswordCount);
+    possiblePasswordCount = 0;
+}
+
+//The answer to Question 3 is the letter r appears 64 times
+function thirdQuestion() {
+    var letterOccurrences = 1;
+    var currentLetterOccurrences = 0;
+    var mostCommonLetter;
+
+    //Compares all letters against eachother in order (the first letter is compared against all other letters, then the second letter is compared against all other letters etc.) and overwrites the highest overall letter with the current highest letter as it comes in
+    for (var i = 0; i < inputRuleSplit.length; i++) {
+        for (j = i; j < inputRuleSplit.length; j++) {
+            if (inputRuleSplit[i][1] == inputRuleSplit[j][1]) {
+                currentLetterOccurrences++;
+            }
+            if (letterOccurrences < currentLetterOccurrences) {
+                letterOccurrences = currentLetterOccurrences; 
+                mostCommonLetter = inputRuleSplit[i][1];
+            }
+        }
+        currentLetterOccurrences = 0;
+    }
+    console.log("Passwords with the letter " + mostCommonLetter + " occurred " + letterOccurrences + " times.");
+}
+
+firstQuestion();
+secondQuestion();
+thirdQuestion();
